@@ -1,0 +1,33 @@
+#Inspired by Lei@loneCapital
+#Coded by Xyuan
+#Bug fixed and improved @ 10/25/20
+
+input price = close;
+input ss = 20;
+input mm = 60;
+input ll = 120;
+def displace = 0;
+input paintbars = yes;
+input showBreakoutSignals = yes;plot SMAss = Average(price[-displace], ss);
+plot EMAss = ExpAverage(price[-displace], ss);plot SMAmm = Average(price[-displace], mm);
+plot EMAmm = ExpAverage(price[-displace], mm);plot SMAll = Average(price[-displace], ll);
+plot EMAll = ExpAverage(price[-displace], ll);SMAss.SetStyle(Curve.SHORT_DASH);
+SMAss.SetDefaultColor(Color.RED);
+EMAss.SetDefaultColor(Color.RED);SMAmm.SetStyle(Curve.SHORT_DASH);
+SMAmm.SetDefaultColor(CreateColor(0, 128, 0));
+EMAmm.SetDefaultColor(CreateColor(0, 128, 0));SMAll.SetStyle(Curve.SHORT_DASH);
+SMAll.SetDefaultColor(Color.CYAN);
+EMAll.SetDefaultColor(Color.CYAN);plot deductions = (( !IsNaN(close[-ss ]) and IsNaN(close[-ss - 1]))) or (( !IsNaN(close[-mm]) and IsNaN(close[-mm - 1])))    or (( !IsNaN(close[-ll]) and IsNaN(close[-ll - 1])));deductions.SetPaintingStrategy(PaintingStrategy.BOOLEAN_POINTS);
+deductions.SetLineWeight(5);
+deductions.SetDefaultColor(Color.PLUM);plot UpSignal = price crosses above EMAss;
+plot DownSignal = price  crosses below EMAss;
+UpSignal.SetHiding(!showBreakoutSignals);
+DownSignal.SetHiding(!showBreakoutSignals);
+UpSignal.SetPaintingStrategy(PaintingStrategy.BOOLEAN_ARROW_UP);
+DownSignal.SetPaintingStrategy(PaintingStrategy.BOOLEAN_ARROW_DOWN);
+UpSignal.SetDefaultColor(CreateColor(0, 128, 0));
+DownSignal.SetDefaultColor(Color.RED);Alert( UpSignal, text = "UP", sound = Sound.Ding, "alert type" = Alert.BAR);
+Alert(DownSignal, text = "DOWN", sound = Sound.Bell, "alert type" = Alert.BAR);AssignPriceColor(
+if paintbars then
+    if price > EMAss and price > price[ss] then CreateColor(0, 128, 0) else if price < EMAss and price < price[ss] then Color.RED else Color.GRAY
+else Color.CURRENT);
