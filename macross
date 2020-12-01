@@ -1,0 +1,41 @@
+
+input price = close;
+input displace = -1;
+def SMA20 = Average(price, 20);
+def eMA20 = ExpAverage(price, 20);
+def eMA50 = ExpAverage(price, 50);
+def eMA100 = ExpAverage(price, 100);
+def eMA200 = ExpAverage(price, 200);
+def sMA50 = Average(price, 50);
+def sMA100 = Average(price, 100);
+def sMA200 = Average(price, 200);
+
+def TR1 = Max(Max((high - low), AbsValue(close[1] - high)), AbsValue(close[1] - low));
+def ATR = 3 * ExpAverage(TR1, 20);
+DEF R1 = close + ATR;
+DEF R2 = close - ATR;
+
+DEF MA25=(20*50*(sMA50-SMA20)-20*close[50-1]+50*close[20-1])/(50-20);
+plot A25=if MA25>=R2 AND MA25<=R1 THEN MA25 ELSE double.nan;
+A25.SetPaintingStrategy(PaintingStrategy.points);
+A25.SetDefaultColor(Color.RED);
+def EMA25=((20+1)*(50-1)*eMA50-(50+1)*(20-1)*eMA20)/(2*50-2*20);
+plot EA25=if EMA25>=R2 AND EMA25<=R1 THEN EMA25 ELSE double.nan;
+EA25.SetPaintingStrategy(PaintingStrategy.tRIANGLES);
+EA25.SetDefaultColor(Color.RED);
+DEF MA51=(50*100*(sMA100-sMA50)-50*close[100-1]+100*close[50-1])/(100-50);
+plot A51=if MA51>=R2 AND MA51<=R1 THEN MA51 ELSE double.nan;
+A51.SetPaintingStrategy(PaintingStrategy.points);
+A51.SetDefaultColor(Color.orange);
+DEF EMA51=((50+1)*(100-1)* eMA100-(100+1)*(50-1)* eMA50)/(2*100-2*50);
+plot EA51=if EMA51>=R2 AND EMA51<=R1 THEN EMA51 ELSE double.nan;
+EA51.SetPaintingStrategy(PaintingStrategy.tRIANGLES);
+EA51.SetDefaultColor(Color.orange);
+DEF MA120=(100*200*(sMA200-sMA100)-100*close[200-1]+200*close[100-1])/(200-100);
+plot A120=if MA120>=R2 AND MA120<=R1 THEN MA120 ELSE double.nan;
+A120.SetPaintingStrategy(PaintingStrategy.points);
+A120.SetDefaultColor(Color.green);
+DEF EMA120=((100+1)*(200-1)* eMA200-(200+1)*(100-1)* eMA100)/(2*200-2*100);
+plot EA120=if EMA120>=R2 AND EMA120<=R1 THEN EMA120 ELSE double.nan;
+EA120.SetPaintingStrategy(PaintingStrategy.tRIANGLES);
+EA120.SetDefaultColor(Color.green);
