@@ -1,0 +1,20 @@
+declare lower;
+input ss=20;
+input mm=60;
+input ll=120;
+
+plot cs;
+plot sm;
+plot ml;
+
+plot baseline=0;
+
+cs= (close-ExpAverage(close, ss))/ExpAverage(close, ss)*100;
+sm=(ExpAverage(close, ss)-ExpAverage(close, mm))/ExpAverage(close, mm)*100;
+ml=(ExpAverage(close, mm)-ExpAverage(close, ll))/ExpAverage(close, ll)*100;
+
+baseline.SetDefaultColor(Color.black);
+ml.SetPaintingStrategy(PaintingStrategy.HISTOGRAM);
+cs.SetDefaultColor(Color.red);
+sm.SetDefaultColor(Color.dark_green);
+ml.SetDefaultColor(Color.gray);
